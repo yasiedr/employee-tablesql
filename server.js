@@ -38,7 +38,8 @@ app.listen(PORT, () => {
 });
 
 
-const firstprompt = () => {
+const showMainMenu = async () => {
+    const { menu } = await
 
     inquirer.prompt([
         {
@@ -174,3 +175,40 @@ const firstprompt = () => {
             console.log(`Employee with id=${newEmployeeId} inserted`);
             break;
           
+            case "Remove a department":
+                selectedDepartment = await department.showSelectDepartmentMenu();
+          
+                if (!selectedDepartment) {
+                  console.log("There isn't any department to delete.");
+                  break;
+                }
+          
+                const deletedDepartmentId = (
+                  await department.getByName(selectedDepartment)
+                ).id;
+          
+                result = await department.remove(deletedDepartmentId);
+                if (result) console.log("Department deleted successfully.");
+                break;
+          
+              case "Remove a role":
+                selectedRole = await role.showSelectroleMenu();
+          
+                if (!selectedRole) {
+                  console.log("There isn't any role to delete.");
+                  break;
+                }
+          
+                const deletedRoleId = (await role.getByTitle(selectedRole)).id;
+          
+                result = await role.remove(deletedRoleId);
+                if (result) console.log("Role deleted successfully.");
+                break;
+
+                case "Exit":
+      process.exit(0);
+  }
+  setTimeout(showMainMenu, 1000);
+};
+
+module.exports = showMainMenu;
